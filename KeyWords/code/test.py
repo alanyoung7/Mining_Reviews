@@ -53,7 +53,8 @@ print(d)
 
 no_punt = [] 
 for review in reviews:
-	review = review[1].split().lower()
+	review = review[1].lower()
+	review = review.split()
 	table = str.maketrans('', '', string.punctuation)
 	stripped = [w.translate(table) for w in review]
 	no_punt.append(stripped)
@@ -66,9 +67,7 @@ word_vec = api.load("glove-wiki-gigaword-100")
 no_punt = [['why', 'would', 'i', 'want', 'an', 'advertisement', 'skill'],['this', 'skill', 'sucks']]
 # no_punt = no_punt.lower()
 for review in no_punt:
-	r_size = len(review)
 	for value in d.values():
-		v_size = len(value)
 		for word in review:
 			for v in value:
 				try:
