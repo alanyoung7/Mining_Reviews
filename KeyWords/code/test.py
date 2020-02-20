@@ -29,7 +29,13 @@ def readfile_arg(fileIN, start, end):
 	    for row in csv_reader:
 	        nameList.append(row[start:end])
 	return nameList
-
+# function to return key for any value 
+def get_key(val, my_dict): 
+    for key, value in my_dict.items(): 
+         if val == value: 
+             return key 
+  
+    return "key doesn't exist"
 
 keyword = [] 
 busi_keyword = []
@@ -58,25 +64,31 @@ for review in reviews:
 	table = str.maketrans('', '', string.punctuation)
 	stripped = [w.translate(table) for w in review]
 	no_punt.append(stripped)
-# print(no_punt[1])
-# no_punt = [item.lower() for item in no_punt]
+
 word_vec = api.load("glove-wiki-gigaword-100")
-# sim = word_vec.similarity('ads','advertisement')
-# print(sim)
-# model = Word2Vec(common_texts, min_count=1)
-no_punt = [['why', 'would', 'i', 'want', 'an', 'advertisement', 'skill'],['this', 'skill', 'sucks']]
-# no_punt = no_punt.lower()
+
 for review in no_punt:
+	n = 0
+	loop_break = False
+
 	for value in d.values():
+		if loop_break: break
 		for word in review:
+			if loop_break: break
 			for v in value:
 				try:
 					sim = word_vec.similarity(word,v)
-					print(word, v, sim)
-					if sim > 0.70:
-						# temp_lst.append(1)
-						print(review, sim)
-						# break
+					#print(word, v, sim)
+					if sim > 0.90:
+					    n += 1
+					    if n > 10:
+					        print(review, get_key(value, d))
+					        print()
+					        loop_break = True
+					        break
+
+
+
 				except KeyError:
 				    pass
 
